@@ -1,0 +1,159 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+        <div class="container-fluid pt-4 px-4">
+            <a href="/admin/addproduct">
+                <button class="btn btn-primary">addproduct</button>
+            </a>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">Responsive Table</h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Pic</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">price</th>
+                                        <th scope="col">category</th>
+                                        <th scope="col">stock</th>
+                                        <th scope="col">Offer</th>
+                                        <th scope="col">Manage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% products.forEach((element,index)=> { %>
+                                      
+                                        <tr id="row<%= index %>">
+                                            <td>
+                                                <img src="/ProductImages/<%= element.image[0] %>" alt=""
+                                                    style="height: 100px; width:100px; object-fit: contain;">
+                                            </td>
+                                            <td>
+                                                <%= element.name %>
+                                            </td>
+                                            <td>
+                                                <%= element.price %>
+                                            </td>
+                                            <td>
+                                                <%= element.category.category %>
+                                            </td>
+                                            <td>
+                                                <%= element.stock %>
+                                            </td>
+                                            <td>
+                                                <% if (element.offer.status) { %>
+                                                 <div class="btn btn-success">active</div>
+                                                 <% } else { %>
+                                                    <div class="btn btn-warning">Inactive</div>
+                                                <% } %>
+                                            </td>
+                                            
+                                            <td><a class="btn" href="/admin/edit-product/<%= element._id %>">edit</a>
+                                            
+
+                                                <% if (element.delete==0) { %>
+
+                                                    <button class="btn btn-danger" id="delete<%= index %>"
+                                                        onclick="deleteProduct('<%= element._id %>','<%= index %>')">delete</button>
+                                                    <button class="btn btn-success" style="display: none;"
+                                                    id="undodelte<%= index %>"
+                                                    onclick="undoDelete('<%= element._id %>','<%= index %>')">Recover</button>
+                                                    <% } else { %>
+                                                    <script>
+                                                        document.getElementById('row<%= index %>').style.color = "red"
+                                                    </script>
+                                                        <button class="btn btn-danger" style="display: none;"
+                                                            id="delete<%= index %>"
+                                                            onclick="deleteProduct('<%= element._id %>','<%= index %>')">delete</button>
+
+                                                        <button class="btn btn-success" id="undodelte<%= index %>"
+                                                            onclick="undoDelete('<%= element._id %>','<%= index %>')">Recover</button>
+                                                        <% } %>
+                                            </td>
+                                        </tr>
+                                      
+                                        <% }) %>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Table End -->
+        <script>
+            const form = document.getElementById('form');
+            function deleteProduct(id, num) {
+                console.log(id)
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                            $.ajax({
+                                url: "/admin/deleteproduct",
+                                method: 'POST',
+                                data: { id: id },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`delete${num}`).style.display = "none"
+                                    document.getElementById(`row${num}`).style.color = "red"
+                                    document.getElementById(`undodelte${num}`).style.display = ""
+
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your product is not deleted", "error");
+                        }
+                    });
+
+            }
+            function undoDelete(id, num) {
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, recover it!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                            $.ajax({
+                                url: "/admin/undodelete",
+                                method: 'POST',
+                                data: { id: id },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`delete${num}`).style.display = ""
+                                    document.getElementById(`row${num}`).style.color = ""
+                                    document.getElementById(`undodelte${num}`).style.display = "none"
+
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your product is not recovered :)", "error");
+                        }
+                    });
+            }
+        </script>
+
+        <%- include('../adminlayout/footer.ejs') %>

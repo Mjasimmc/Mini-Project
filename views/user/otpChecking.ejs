@@ -1,0 +1,23 @@
+<%- include('../layout/header.ejs') %>
+
+        <head>
+<link rel="stylesheet" href="\stylesheets\signIn.css">
+        </head>
+        <!--================Login Box Area =================-->
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <!-- Tabs Titles -->
+
+                <!-- Icon -->
+                <!-- Login Form -->
+                
+                <form class="p-t-15" method="post" action="/verifyOtp">
+                    <h4>Enter Otp</h4>
+                    <input type="text" id="login" class="fadeIn second" name="post">
+                    <input type="submit" class="fadeIn fourth" value="Submit">
+                </form>
+            </div>
+        </div>
+        
+        <%- include('../layout/footer.ejs') %>

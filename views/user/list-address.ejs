@@ -1,0 +1,48 @@
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/after-login.ejs') %>
+        <section class="banner-area organic-breadcrumb">
+            <div class="container">
+            </div>
+        </section>
+        <section class="login_box_area section_gap">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-12">
+
+                        <% if (typeof alertMessage) { %>
+                         <p style="color: red;"><%= alertMessage %></p><br>
+                        <% } %>
+                    </div>
+                    <% userdata.address.forEach((element,index)=> { %>
+                        <div class="col-8 col-md-3 col-lg-3">
+                            <div class="">
+                                <% if (index == 0) { %>
+                                    <h6> Primary Address</h6>
+                                    <% } else { %>
+                                        <h6>address-<%= index %></h6>
+                                        <% } %>
+                                        <hr>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= element.house %>,<br>
+                                         - <%= element.city %>,<br>
+                                         - <%= element.district %>,<br>
+                                         - <%= element.state %>,<br>
+                                        <br>
+                                        - <%= element.post %>
+                                    </p><br>
+                                </div>
+                                
+                                <a href="/delete-address/<%= element._id %>"><button
+                                        class="btn btn-primary">remove</button></a>
+                                <hr>
+                                
+                            </div>
+                            
+                        </div>
+                        <% }) %>
+                    </div>
+                    <a href="/add-address"><button class="btn btn-primary mb-5">Add address</button></a>
+                </div>
+        </section>
+
+        <%- include('../layout/footer.ejs') %>

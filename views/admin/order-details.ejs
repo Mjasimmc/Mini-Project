@@ -1,0 +1,147 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <h1>Order Details</h1>
+                    <h4>User Id <a href="">
+                            <%= order.user %>
+                        </a></h4>
+                    <h6>Order Id <a href="">
+                            <%= order._id %>
+                        </a></h6>
+                    <h6>Name :<%= order.orderaddress.name %>
+                    </h6>
+                    <h6>Address : <%= order.orderaddress.house %>,<%= order.orderaddress.city %>,<%=
+                                    order.orderaddress.district %>,<%= order.orderaddress.state %>
+                    </h6>
+                    <h6>Post : <%= order.orderaddress.post %>
+                    </h6>
+                    <h6>Date : <%= order.orderdate %>
+                    </h6>
+                </div>
+                <% if (order.orderstatus[order.orderstatus.length-1]=="order cancelled" ||order.orderstatus[order.orderstatus.length-1]=="Order Delivered")  { %>
+
+                    <h3 class="m-5">Order Status : <%= order.orderstatus[order.orderstatus.length-1] %>
+                    </h3>
+                    
+                    <% } else { %>
+
+                        <h3 class="m-5" id="orderMessage">Order Status : <%= order.orderstatus[order.orderstatus.length-1] %>
+                        </h3>
+                        <div class="col-5 m-5" id="formdisplay">
+                            <form action="" id="Myform">
+                                <select name="data" id="">
+                                    <option value="">Select</option>
+                                    <option value="Order Checked">Order Checked</option>
+                                    <option value="Out For Delivery">Out For Delivery</option>
+                                    <option value="Order Delivered">Delivered</option>
+                                </select>
+                                <button class="btn btn-primary">Submit</button>
+                            </form>
+
+                        </div>
+                        <script>
+                            const orderid = '<%= order._id %>'
+                            const form = document.getElementById("Myform")
+                            form.addEventListener('submit', function (event) {
+                                event.preventDefault();
+                                const name = form.elements['data'].value
+                                console.log(name)
+                                $.ajax({
+                                    url: "/admin/updateOrder",
+                                    method: 'POST',
+                                    data: { name: name,orderid:orderid },
+                                    encoded: true,
+                                    success: function (response) {
+                                        console.log(response)
+                                        if(response.name == "Order Delivered"){
+                                            document.getElementById("formdisplay").style.display = "none"
+                                        }
+                                        document.getElementById("orderMessage").innerHTML = "Order Status : "+response.name
+                                    }
+                                });
+                            })
+
+                        </script>
+                        <% } %>
+
+
+
+
+                            <div class="col-3">
+                                <div class="div">
+
+
+                                </div>
+                            </div>
+            </div>
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Responsive Table</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Pic</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">price</th>
+                                            <th scope="col">category</th>
+                                            <th scope="col">Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% order.products.forEach((element,index)=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= index+1 %>
+                                                </td>
+                                                <td>
+                                                    <img src="/ProductImages/<%= element.product.image[0] %>" alt=""
+                                                        style="height: 100px; width:100px; object-fit: cover;">
+                                                </td>
+                                                <td>
+                                                    <%= element.product.name %>
+                                                </td>
+                                                <td>
+                                                    <%= element.product.price %>
+                                                </td>
+                                                <td>
+                                                    <%= element.product.category %>
+                                                </td>
+                                                <td>
+                                                    <%= element.quantity %>
+                                                </td>
+                                            </tr>
+
+                                            <% }) %>
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="row">
+                                <h6> Total Price : <%= order.totalprice %>
+                                </h6>
+                                <h6> Payment Method : <%= order.payement %>
+                                </h6>
+                                <h6> Order Status : <%= order.orderstatus[order.orderstatus.length-1] %>
+                                </h6>
+                                <h6> Payment Status : <%= order.paymentstatus %>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+
+        </div>
+
+
+        <%- include('../adminlayout/footer.ejs') %>

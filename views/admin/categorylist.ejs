@@ -1,0 +1,138 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+    <script>
+        let dashboardLink = document.getElementById("category");
+    dashboardLink.classList.add("active");
+    </script>
+        <div class="container-fluid pt-4 px-4">
+            <a href="/admin/category">
+                <button class="btn btn-primary">Add category</button>
+            </a>
+            <% if (alertMessage) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= alertMessage %>
+                </div>
+                <% } %>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="bg-light rounded h-100 p-4">
+                                <h6 class="mb-4">Responsive Table</h6>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No </th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">No of products</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% category.forEach((element,index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index+1 %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= element.category %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.products %>
+                                                    </td>
+
+                                                    <td><a href="/admin/edit-category/<%= element._id %>"
+                                                            class="btn btn-danger">edit</a></td>
+
+
+                                                    <td>
+                                                        <% if (element.delete==0) { %>
+                                                            <button id="remove<%= index %>"
+                                                                onclick="removeCategory(`<%= element.category %>`,'<%= index %>')"
+                                                                class="btn btn-danger">disable</button>
+                                                            <button style="display: none;" id="add<%= index %>"
+                                                                onclick="addCategory(`<%= element.category %>`,'<%= index %>')"
+                                                                class="btn btn-danger">Undo disable</button>
+                                                            <% } else { %>
+                                                                <button style="display: none;" id="remove<%= index %>"
+                                                                    onclick="removeCategory(`<%= element.category %>`,'<%= index %>')"
+                                                                    class="btn btn-danger">disable</button>
+                                                                <button id="add<%= index %>"
+                                                                    onclick="addCategory(`<%= element.category %>`,'<%= index %>')"
+                                                                    class="btn btn-danger">Undo disable</button>
+                                                                <% } %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <!-- Table End -->
+        <script>
+            function removeCategory(name, num) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Do you want to disable this category",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, disable it!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Deleted!", "category has been disable.", "success");
+                            $.ajax({
+                                url: "/admin/delete-category",
+                                method: 'POST',
+                                data: { name: name },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`remove${num}`).style.display = "none"
+                                    document.getElementById(`add${num}`).style.display = ""
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your product is not deleted", "error");
+                        }
+                    });
+            }
+            function addCategory(name, num) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Do you want to undo disable",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Deleted!", "category has been deleted.", "success");
+
+                            $.ajax({
+                                url: "/admin/undo-Category",
+                                method: 'POST',
+                                data: { name: name },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`remove${num}`).style.display = ""
+                                    document.getElementById(`add${num}`).style.display = "none"
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your product is not deleted", "error");
+                        }
+                    });
+
+            }
+        </script>
+        <%- include('../adminlayout/footer.ejs') %>

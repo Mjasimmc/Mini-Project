@@ -1,0 +1,27 @@
+<%- include('../layout/header.ejs') %>
+<%- include('../layout/after-login.ejs') %>
+
+    <head>
+        <title>Welcome Page</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Custom CSS -->
+        <style>
+            .welcome-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <div class="container" style="min-height: 100vh;color: red;size: 50px;">
+        <div class="row">
+            <div class="col-12 text-center welcome-text">
+                <h1>Payment has been failed</h1>
+                <a class="btn btn-primary" href="/checkout">Start from first initial step of checkout</a>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../layout/footer.ejs') %>

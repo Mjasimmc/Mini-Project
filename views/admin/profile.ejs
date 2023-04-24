@@ -1,0 +1,16 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+        <h1>Profile</h1>
+
+        <div class="col back m-5">
+            <h3>Admin Email</h3>
+            <p>
+                <%= admin.email %>
+            </p>
+            <h3>Admin Pass</h3>
+            <a href="">
+                <%= admin.password %>
+            </a>
+        </div>
+        <%- include('../adminlayout/footer.ejs') %>

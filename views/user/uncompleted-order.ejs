@@ -1,0 +1,336 @@
+<%- include('../layout/header.ejs') %>
+
+    
+    <div class="container wrapper">
+
+        <div class="row cart-body">
+            <div class="col-6 m-5">
+                <div class="col-xs-12">
+                    <form action="" id="couponform">
+                        <p id="couponMessage">Have Coupon?</p>
+                        <input class="form-control" type="text" name="couponcode" placeholder="Enter coupon code here">
+                        <input type="submit" class="btn btn-primary btn-submit-fix">
+                    </form>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+                    <!--REVIEW ORDER-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Review Order <div class="pull-right"><small><a class="afix-1" href="/view-cart">Edit
+                                        Cart</a></small></div>
+                        </div>
+                        <div class="panel-body">
+                            <!-- cart product  starting -->
+                            <% let totalPrice=0 %>
+                                <% users.cart.forEach((element)=> { %>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-3 col-xs-3">
+                                            <img class="img-responsive" style="object-fit: contain;"
+                                                src="/ProductImages/<%= element.product.image[0] %>" />
+                                        </div>
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="col-xs-12">
+                                                <%= element.product.name %>
+                                            </div>
+                                            <div class="col-xs-12"><small>Quantity:<span>
+                                                        <%= element.quantity %>
+                                                    </span></small></div>
+                                            <input type="text">
+                                        </div>
+                                        <% let pdt_total_Price=0 %>
+                                            <div class="col-sm-3 col-xs-3 text-right">
+                                                <h6><span>$</span>
+                                                    <%= pdt_total_Price=element.quantity* element.product.price %>
+                                                </h6>
+                                                <% totalPrice +=pdt_total_Price %>
+                                            </div>
+                                    </div>
+                                    <% }) %>
+
+                                        <!-- cart product ending -->
+                                        <div class="form-group">
+                                            <hr />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                <strong>Subtotal</strong>
+                                                <div class="pull-right"><span>$</span><span>
+                                                        <%= totalPrice %>
+                                                    </span></div>
+                                            </div>
+                                            <div class="col-xs-12" id="couponplate" style="display: none;">
+                                                <small>Coupon Discount</small>
+                                                <div class="pull-right">$<span id="coupondiscount"></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <hr />
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                <strong>Order Total</strong>
+                                                <input type="number" style="display: none;" value="<%= totalPrice %>">
+                                                <div class="pull-right"><span>$</span><span id="totalprice"
+                                                        name="totalprice">
+                                                        <%= totalPrice %>
+                                                    </span></div>
+                                            </div>
+                                        </div>
+
+
+                        </div>
+                    </div>
+                    <!--REVIEW ORDER END-->
+                </div>
+                <form id="myForm">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+                        <!--SHIPPING METHOD-->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Address</div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <h4>Shipping Address</h4>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Choose Address
+                                </button>
+
+                                <!-- Modal -->
+
+                                <div class="form-group">
+                                    <div class="col">
+                                        <strong> Name:</strong>
+                                        <input type="text" name="name" class="form-control" value="<%= users.name %>"
+                                            readonly />
+                                    </div>
+                                    <div class="span1"></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12"><strong>Address:</strong></div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="house" class="form-control" readonly value="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12"><strong>City:</strong></div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="city" class="form-control" readonly value="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12"><strong>District:</strong></div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="district" class="form-control" readonly value="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12"><strong>State:</strong></div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="state" class="form-control" readonly value="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12"><strong>Zip / Postal Code:</strong></div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="post" class="form-control" readonly value="" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Payement
+                                Method</div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <input type="radio" class="col-1  nonsubmit" name="payment" value="COD" required>
+                                    <div class="col-md-12">
+                                        <strong class="col-5">Cash On Delivery</strong>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" class="col-1 nonsubmit" name="payment" value="WLT" required>
+                                    <div class="col-md-12">
+                                        <strong class="col-5">Wallet</strong>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" class="col-1 nonsubmit" name="payment" value="OP" required>
+                                    <div class="col-md-12">
+                                        <strong class="col-5">Online Payement</strong>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-submit-fix">Place
+                                            Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body,
+        .form-control {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+    <input type="text" id="addressadded" style="display: none;" value="<%= users.address.length %>">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script>
+        let setresponse
+        let setname
+        let setemail
+        let setmobile
+        let orderplaced = false
+        let couponadded = false
+        let addressaddedin = false
+        const couponform = document.getElementById('couponform');
+        couponform.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let couponcode = couponform.elements["couponcode"].value
+            if (couponadded) {
+                alert("Coupon already added")
+            } else {
+                $.ajax({
+                    url: "/checkCoupon",
+                    method: 'POST',
+                    data: { coupon: couponcode },
+                    encoded: false,
+                    success: function (response) {
+                        if (response.amount) {
+                            couponadded = response.couponid
+                            document.getElementById("couponplate").style.display = ""
+                            document.getElementById("coupondiscount").style.display = ""
+                            let amount = parseInt(document.getElementById("totalprice").innerHTML)
+                            let couponAmount = response.amount
+                            amount = (amount / 100) * couponAmount
+                            document.getElementById("totalprice").innerHTML -= amount
+                            document.getElementById("coupondiscount").innerHTML = amount
+                            console.log(response.amount)
+                            document.getElementById("couponMessage").style.color = "green"
+                            document.getElementById("couponMessage").innerHTML = "coupon applied"
+                        } else {
+                            document.getElementById("couponMessage").style.color = "red"
+                            document.getElementById("couponMessage").innerHTML = response.message
+                        }
+                    }
+                });
+            }
+        })
+
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            let address = document.getElementById('addressadded').value
+            const payment = form.elements['payment'].value;
+            if (orderplaced) {
+                paymentOrder(setresponse, setname, setemail, setmobile)
+            } else if (payment == "WLT") {
+                walletCheck()
+            } else{
+                location.reload
+            }
+        });
+        function walletCheck() {
+            $.ajax({
+                url: "/walletCheck",
+                method: 'POST',
+                data: {
+                    amount: document.getElementById("totalprice").innerHTML
+                },
+                encoded: false,
+                success: function (response) {
+                    if (response.status) {
+                        check()
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'info',
+                            title: 'Insufficient balance in Your wallet.',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                    }
+                }
+            });
+        }
+        function paymentOrder(response, name, email, mobile) {
+            var options = {
+                "key": "rzp_test_0vN6fDOIHGEZ8I", // Enter the Key ID generated from the Dashboard
+                "amount": response.amount_due, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Acme Corp", //your business name
+                "description": "Test Transaction",
+                "image": "https://example.com/your_logo",
+                "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                "prefill": {
+                    "name": name, //your customer's name
+                    "email": email,
+                    "contact": mobile
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }, "handler": function (response) {
+                    console.log(response)
+                    verifyPayment(response)
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+            e.preventDefault();
+        }
+        function verifyPayment(response) {
+            $.ajax({
+                url: "/verify-payment",
+                method: 'POST',
+                data: {
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature
+                },
+                encoded: false,
+                success: function (response) {
+                    if (response.payment) {
+                        location.href = `/confirmation/${response.orderid}`
+                    }
+                }
+            });
+        }
+        function addressChoose(i) {
+            const uhouse = document.getElementById(`house${i}`).innerHTML
+            const ucity = document.getElementById(`city${i}`).innerHTML
+            const udistrict = document.getElementById(`district${i}`).innerHTML
+            const ustate = document.getElementById(`state${i}`).innerHTML
+            const upost = document.getElementById(`post${i}`).innerHTML
+            form.elements['city'].value = ucity
+            form.elements['district'].value = udistrict
+            form.elements['state'].value = ustate
+            form.elements['post'].value = upost
+            form.elements['house'].value = uhouse
+        }
+    </script>
+    <%- include('../layout/footer.ejs') %>

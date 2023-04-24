@@ -1,0 +1,96 @@
+<%- include('../layout/header.ejs') %>
+  <%- include('../layout/after-login.ejs') %>
+    <!--================Order Details Area =================-->
+    <section>
+      <div class="container">
+        <h1 class="m-2">Order Details</h1>
+        
+        <hr>
+        <br>
+        <div class="row">
+          <div class="col-lg-6 ">
+            <h6 class="m-2">Name :<%= orderDetails.orderaddress.name %>
+            </h6>
+            <h6 class="m-2">Address : <%= orderDetails.orderaddress.house %>,<%= orderDetails.orderaddress.city %>,<%=
+                    orderDetails.orderaddress.district %>,<%= orderDetails.orderaddress.state %>
+            </h6>
+            <h6 class="m-2">Post : <%= orderDetails.orderaddress.post %>
+            </h6>
+            <h6 class="m-2">Date : <%= orderDetails.orderdate %>
+            </h6>
+          </div>
+          <h3 class="m-5">Order Status : <%= orderDetails.orderstatus[orderDetails.orderstatus.length-1] %>
+          </h3>
+        </div>
+        <div class="container-fluid pt-4 px-4">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Responsive Table</h6>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Pic</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Return Product</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% orderDetails.products.forEach((element,index)=> { %>
+                        <tr>
+                          <td>
+                            <%= index+1 %>
+                          </td>
+                          <td>
+                            <img src="/ProductImages/<%= element.product.image[0] %>" alt=""
+                              style="height: 100px; width:100px; object-fit: contain;">
+                          </td>
+                          <td>
+                            <%= element.product.name %>
+                          </td>
+                          <td>
+                            <%= element.product.price %>
+                          </td>
+                          <td>
+                            <%= element.quantity %>
+                          </td>t
+                          <td>
+                            <% if(element.products.productreturn) {%>
+                              <% }else{ %>
+                                <a href="/" class="btn btn-danger">Return</a>
+                              <% } %>
+                            
+                          </td>
+                        </tr>
+
+                        <% }) %>
+
+
+                    </tbody>
+
+                  </table>
+                </div>
+                <div class="col">
+                  <h6> Total Price : <%= orderDetails.totalprice %>
+                  </h6>
+                  <hr>
+                  <h6> Payment Method : <%= orderDetails.payement %>
+                  </h6>
+                  <hr>
+                  <h6> Order Status : <%= orderDetails.orderstatus[orderDetails.orderstatus.length-1] %>
+                  </h6><hr>
+                  <h6> Payment Status : <%= orderDetails.paymentstatus %>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Table End -->
+      </div>
+    </section>
+    <%- include('../layout/footer.ejs') %>

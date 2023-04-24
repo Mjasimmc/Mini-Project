@@ -1,0 +1,67 @@
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/after-login') %>
+
+        <head>
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"
+                id="bootstrap-css">
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+            <!------ Include the above in your HEAD tag ---------->
+
+        </head>
+        <div class="container">
+
+            <div class="row  justify-content-center">
+                <div class="col-8 col-md-8 col-lg-6">
+                    <form method="post" action="">
+
+                        <!--SHIPPING METHOD-->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Add Address</div>
+                            <div class="panel-body">
+
+
+                                <div class="form-group">
+                                    <div class="col">
+                                        <strong>House:</strong>
+                                        <input type="text" class="form-control" name="house" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col"><strong>City:</strong></div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col"><strong>District:</strong></div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" name="district" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col"><strong>State:</strong></div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" name="state" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col"><strong>Zip / Postal Code:</strong></div>
+                                    <div class="col-8">
+                                        <input type="tel" class="form-control" name="post" required>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <button type="submit" class="btn btn-primary btn-submit-fix">Add address</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--CREDIT CART PAYMENT END-->
+        </div>
+
+
+        <%- include('../layout/footer.ejs') %>

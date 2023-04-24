@@ -1,0 +1,93 @@
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/before-login.ejs') %>
+
+        <head>
+            <link rel="stylesheet" href="\stylesheets\signIn.css">
+        </head>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <form class="p-t-15" method="post" id="form" action="/registerUser">
+                    <h4>Login Your Account</h4>
+                    <input type="text" id="username" class="fadeIn second" name="name" placeholder="Username" required
+                        title="Please enter a valid name.">
+                    <input type="email" class="fadeIn third" value="<%= email %>" id="email" name="email"
+                        placeholder="Email" style="display: none;">
+                    <input type="tel" id="mobile" name="mobile" placeholder="Enter Mobile" required>
+                    <input type="password" class="fadeIn fourth" minlength="6" id="password" name="password"
+                        placeholder="Password" required>
+                    <input type="password" class="fadeIn fifth" id="repassword" oninput="validatePassowrd()"
+                        name="repassword" placeholder="Re-Password" required>
+                    <p class="alert text-danger" id="passMessage"></p>
+                    <input type="submit" class="fadeIn fourth" value="Sign Up">
+                </form>
+            </div>
+        </div>
+        <script>
+            let pass = false
+            function validateName(name) {
+                var regex = /^[A-Za-z]+$/;
+                if (regex.test(name)) {
+                    return true
+                } else {
+                    return false;
+                }
+            }
+            function validatePassowrd() {
+                const password = document.getElementById("password").value
+                const repassword = document.getElementById("repassword").value
+                if (password == repassword) {
+                    document.getElementById("passMessage").innerHTML = ""
+                    pass = true
+                } else {
+                    document.getElementById("passMessage").innerHTML = "Password is not match"
+                    pass = false
+                }
+            }
+
+            const form = document.getElementById('form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                let name = document.getElementById("username").value
+                const result = validateName(name)
+                let number = validateMobileNumber(form.elements['mobile'].value)
+                console.log(result + "nothign");
+                if (result == false) {
+                    swal.fire("Enter Valid Name")
+                } else if (pass == false) {
+                    alert("Please match Your password")
+                } else if (number == false) {
+                    alert("Validate you phone")
+                } else {
+                    form.submit()
+                }
+            })
+            function validateMobileNumber(mobileNumber) {
+                const regex = /^[0-9]{10}$/;
+                if (!regex.test(mobileNumber)) {
+                    return false;
+                }
+                return true;
+            }
+
+        </script>
+        <style>
+            input {
+                background-color: #f6f6f6;
+                border: none;
+                color: #0d0d0d;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 5px;
+                width: 85%;
+                border: 2px solid #f6f6f6;
+            }
+
+            input:focus {
+                background-color: #fff;
+                border-bottom: 2px solid #5fbae9;
+            }
+        </style>
+        <%- include('../layout/footer.ejs') %>

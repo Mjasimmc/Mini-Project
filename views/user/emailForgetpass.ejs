@@ -1,0 +1,50 @@
+<%- include('../layout/header.ejs') %>
+
+        <head>
+            <link rel="stylesheet" href="\stylesheets\signIn.css">
+        </head>
+        <!--================Login Box Area =================-->
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <form class="p-t-15" id="form" method="post" onsubmit="return checkemail()" action="">
+                    <div class="alert alert-success m-5" role="alert" style="display: none;" id="AlertMessage">
+
+                    </div>
+                    <h4>Enter Your Email</h4>
+                   
+                    <input type="text" id="email"  class="fadeIn second" name="email"
+                        placeholder="Enter email" required>
+                        
+                    <input type="submit" class="fadeIn fourth" value="Submit">
+                    <div id="formFooter">
+                        <a class="underlineHover" href="/login">Already have Account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            const form = document.getElementById('form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                let email = document.getElementById("email").value
+                $.ajax({
+                    url: "/validateEmail",
+                    method: 'POST',
+                    data: { email: email },
+                    encoded: true,
+                    success: function (response) {
+                        console.log(response)
+                        if (response.userdata) {
+                            console.log("ok")
+                            document.getElementById("AlertMessage").style.display = ""
+                            document.getElementById("AlertMessage").innerHTML = response.userdata
+                        } else {
+                            form.submit()
+                        }
+                    }
+                });
+            })
+
+
+        </script>
+        <%- include('../layout/footer.ejs') %>

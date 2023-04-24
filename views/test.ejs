@@ -1,0 +1,38 @@
+<%- include('./layout/header.ejs') %>
+
+    <div class="container wrapper">
+        <div class="row cart-body">
+            <form action="" class="form-horizontal">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+                    <!--SHIPPING METHOD-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Address</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h4>Shipping Address</h4>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <strong> Name:</strong>
+                                    <input type="text" name="name" class="form-control details" value="" />
+                                </div>
+                                <div class="span1"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Address:</strong></div>
+                                <div class="col-md-12">
+                                    <input type="text" name="house" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    
+    <%- include('./layout/footer.ejs') %>

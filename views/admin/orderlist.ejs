@@ -1,0 +1,79 @@
+<%- include('../adminlayout/header.ejs') %>
+<%- include('../adminlayout/navbar.ejs') %>
+
+    
+
+    <!-- Recent Sales Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Sales Report</h6>
+                <a href="/admin/export-pdf/nothing">Invoice</a>
+            </div>
+           
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">payement</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <% orders.forEach((element,index) => { %>
+                                <tr>
+                                    <td><%= index+1+(page-1)*10 %></td>
+                                    
+                                <td><%= element.orderdate%></td>
+                                <td><%= element.orderaddress.name %></td>
+                                <td>$<%= element.totalprice %></td>
+                                <td><%= element.payement %></td>
+                                <td><%= element.orderstatus[element.orderstatus.length-1] %></td>
+                                <td><a class="btn btn-sm btn-primary" href="/admin/order/<%= element._id %>">Detail</a></td>
+                            </tr>
+                        
+                            
+                            
+                        <% }) %>
+                        <% if (page*10 == orders.length) { %>
+                         
+                            <tr>
+                                <td><a class="btn btn-info" href="/admin/orderlist/<%= page+1 %>">More</a></td>
+                            </tr>
+                        <% } %>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded-top p-4">
+            <div class="row">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                </div>
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                    </br>
+                    Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+
+<%- include('../adminlayout/footer.ejs') %>

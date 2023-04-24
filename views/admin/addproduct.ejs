@@ -1,0 +1,80 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <form action="/admin/addproduct" method="post" id="formone" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">price</label>
+                        <input type="tel" class="form-control" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">stock</label>
+                        <input type="text" class="form-control" name="stock" value="" required>
+                    </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                    style="height: 150px;" name="description" required></textarea>
+            </div>
+            <div class="bg-light rounded p-1">
+                <h6 class="mb-4">Category</h6>
+
+                <select class="form-select mb-3" name="fruits" id="fruits" aria-label="Default select example">
+                    <option value="">select</option>
+                    <% category.forEach((element)=> { %>
+                        <option value="<%= element._id  %>">
+                            <%= element.category %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Image</label>
+                <input class="form-control" type="file" name="image" id="formFile" width="48" height="480px" multiple>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>
+        </div>
+        <script>
+            // Get the input element where the user selects the image file
+            const form = document.getElementById("formone")
+            const input = document.querySelector('input[type="file"]');
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const result = validateImages();
+                if (result) {
+                    form.submit()
+                } else {
+                    alert("insert Valid Image")
+                }
+            })
+            function validateImages() {
+                let files = input.files;
+
+                let value = true
+                for (var i = 0; i < files.length; i++)
+                {
+                    let file = files[i];
+                    let imageType = /image.*/;
+                    if (!file.type.match(imageType)) {
+                        value = false;
+                    }
+                    if (file.size > 1024 * 1024) {
+                        value = false;
+                    }
+                }
+                return value
+                alert('All images are valid');
+            }
+
+        </script>
+        <%- include('../adminlayout/footer.ejs') %>

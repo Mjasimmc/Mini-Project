@@ -1,0 +1,64 @@
+<%- include('../layout/header.ejs') %>
+
+        <head>
+            <link rel="stylesheet" href="\stylesheets\signIn.css">
+        </head>
+        <!--================Login Box Area =================-->
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <!-- Tabs Titles -->
+
+                <!-- Icon -->
+                <!-- Login Form -->
+
+                <form class="p-t-15" method="post" action="/passwordchange">
+                    
+
+                            <h4>Login Your Account</h4>
+                            <input type="password" id="pass" class="fadeIn second" name="email" placeholder="Enter New Passowrd">
+                            <input type="password" id="password" class="fadeIn third" name="password"
+                                placeholder="Re enter password">
+                            <input type="submit" class="fadeIn fourth" value="Log In">
+                </form>
+
+                <!-- Remind Passowrd -->
+                <div id="formFooter">
+                    <a class="underlineHover" href="#">Forgot Password?</a>
+                </div>
+                <div id="formFooter">
+                    <a class="underlineHover" href="/register">Create an account</a>
+                </div>
+
+
+            </div>
+        </div>
+
+        <style>
+
+            input[type=text],
+            input[type=email],
+            input[type=password],
+            input[type=tel] {
+                background-color: #f6f6f6;
+                border: none;
+                color: #0d0d0d;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 5px;
+                width: 85%;
+                border: 2px solid #f6f6f6;
+            }
+
+            input[type=text]:focus,
+            input[type=email]:focus,
+            input[type=password]:focus,
+            input[type=tel]:focus {
+                background-color: #fff;
+                border-bottom: 2px solid #5fbae9;
+            }
+        </style>
+        <%- include('../layout/footer.ejs') %>

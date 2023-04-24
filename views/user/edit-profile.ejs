@@ -1,0 +1,49 @@
+<%- include('../layout/header.ejs') %>
+    <%- include('../layout/before-login.ejs') %>
+
+        <head>
+            <link rel="stylesheet" href="\stylesheets\signIn.css">
+        </head>
+        <!--================Login Box Area =================-->
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+               
+
+                <form class="p-t-15" method="post" action="/profile">
+                   
+
+                            <h4>Login Your Account</h4>
+
+                            <input type="text" id="login" class="fadeIn second" name="name" value="<%= userdata.name %>"
+                                placeholder="Enter Email" requied>
+                            <input type="text" id="login" class="fadeIn second" name="email" value="<%= userdata.email %>"
+                                placeholder="Enter Email" required>
+                            <!-- <input type="text" id="login" class="fadeIn second" minlength="10" value=""
+                                maxlength="10" name="mobile" placeholder="Phone" required> -->
+
+                            <input type="submit" class="fadeIn fourth" value="Save Update">
+                </form>
+
+
+            </div>
+        </div>
+
+        <%- include('../layout/footer.ejs') %>
+        <!--================End Login Box Area =================-->
+        <script>
+            function validateform() {
+                var mailFormat = /\S+@\S+\.\S+/;
+                if (inputText.value.match(mailFormat)) {
+                    alert("Valid address!");
+                    return true;
+                } else {
+                    alert("Invalid address!");  
+                    return false;
+                }
+            }
+            function goBack() {
+            window.history.go(-1);
+        }
+        </script>
+        <%- include('../layout/footer.ejs') %>

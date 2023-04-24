@@ -1,0 +1,191 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+        <div class="container-fluid pt-4 px-4">
+            <a href="/admin/addcoupon">
+                <button class="btn btn-primary">Add Coupon</button>
+            </a>
+            <% if (alertMessage) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= alertMessage %>
+                </div>
+                <% } %>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="bg-light rounded h-100 p-4">
+                                <h6 class="mb-4">Responsive Table</h6>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>code</th>
+                                                <th>issued Date</th>
+                                                <th>validity</th>
+                                                <th>No of users</th>
+                                                <th>Discount</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%couponList.forEach((element,index)=> { %>
+                                                <tr id="rowof<%= index %>">
+                                                    <td>
+                                                        <%= index+1 %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= element.name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.code %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.issued_date %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.validUpTo %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.quantity %>
+                                                    </td>
+                                                    <td>
+                                                        <%= element.amount+"%" %>
+                                                    </td>
+                                                    <td><a href="/admin/coupon/<%= element._id %>"
+                                                            class="btn btn-info">edit</a></td>
+                                                    <td>
+
+                                                        <% if (element.disable) { %>
+                                                            <button style="display: none;" id="disable<%= index %>"
+                                                                onclick="disablecoupon('<%= element._id %>','<%= index %>')"
+                                                                class="btn btn-danger">Disable</button>
+                                                            <button id="undodisable<%= index %>"
+                                                                onclick="undodisablecoupon('<%= element._id %>','<%= index %>')"
+                                                                class="btn btn-success">Enable</button>
+                                                            <% } else { %>
+                                                                <button id="disable<%= index %>"
+                                                                    onclick="disablecoupon('<%= element._id %>','<%= index %>')"
+                                                                    class="btn btn-danger">Disable</button>
+                                                                <button style="display: none;"
+                                                                    id="undodisable<%= index %>"
+                                                                    onclick="undodisablecoupon('<%= element._id %>','<%= index %>')"
+                                                                    class="btn btn-success">Enable</button>
+                                                                <% } %>
+
+
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger"
+                                                            onclick="removeCoupon('<%= element._id %>','<%= index %>')">Remove</button>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                                    <script>
+                                                        function removeCoupon(id, index) {
+                                                            swal({
+                                                                title: "Are you sure?",
+                                                                text: "Do you want to delete Coupon",
+                                                                type: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#DD6B55",
+                                                                confirmButtonText: "Yes",
+                                                                cancelButtonText: "No",
+                                                                closeOnConfirm: false,
+                                                                closeOnCancel: false
+                                                            },
+                                                                function (isConfirm) {
+                                                                    if (isConfirm) {
+                                                                        swal("deleted !", "Coupon Has been deleted", "success");
+
+                                                                        $.ajax({
+                                                                            url: "/admin/remove-coupon",
+                                                                            method: 'POST',
+                                                                            data: { id: id },
+                                                                            encoded: true,
+                                                                            success: function (response) {
+                                                                                document.getElementById(`rowof${index}`).style.display = "none"
+                                                                            }
+                                                                        });
+                                                                    } else {
+                                                                        swal("Cancelled", "Your request has been cancelled", "error");
+                                                                    }
+                                                                });
+
+                                                        }
+                                                    </script>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <!-- Table End -->
+        <script>
+            function disablecoupon(id, num) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Do you want to Disable Coupon",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Disabled !", "Coupon Has been Disable", "success");
+
+                            $.ajax({
+                                url: "/admin/disable-coupon",
+                                method: 'POST',
+                                data: { id: id },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`disable${num}`).style.display = "none"
+                                    document.getElementById(`undodisable${num}`).style.display = ""
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your request has been cancelled", "error");
+                        }
+                    });
+            }
+            function undodisablecoupon(id, num) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Do you want to Enable Coupon",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            swal("Enabled!", "Coupon Has been Enabled.", "success");
+
+                            $.ajax({
+                                url: "/admin/enable-coupon",
+                                method: 'POST',
+                                data: { id: id },
+                                encoded: true,
+                                success: function (response) {
+                                    document.getElementById(`disable${num}`).style.display = ""
+                                    document.getElementById(`undodisable${num}`).style.display = "none"
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your request has been cancelled", "error");
+                        }
+                    });
+            }
+        </script>
+        <%- include('../adminlayout/footer.ejs') %>

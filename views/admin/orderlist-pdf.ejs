@@ -1,0 +1,51 @@
+<%- include('../adminlayout/header.ejs') %>
+    
+
+    <!-- Recent Sales Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Recent Sales</h6>
+            </div>
+           
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">payement</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let limitis = orders.length/10%>
+                        
+                        <% orders.forEach((element,index) => { %>
+                                <tr>
+                                    <td><%= index+1 %></td>
+                                    <% const date = new Date(element.orderdate);
+                                const dateOnly = date.toISOString().slice(0, 10); %>
+                                <td><%= dateOnly %></td>
+                                <td><%= element.orderaddress.name %></td>
+                                <td>$<%= element.totalprice %></td>
+                                <td><%= element.payement %></td>
+                                <td><%= element.orderstatus[element.orderstatus.length-1] %></td>
+                                <td><a class="btn btn-sm btn-primary" href="/admin/order/<%= element._id %>">Detail</a></td>
+                            </tr>
+                        </div>
+                        <% }) %>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+<%- include('../adminlayout/footer.ejs') %>

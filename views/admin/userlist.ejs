@@ -1,0 +1,144 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">Responsive Table</h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Controller</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach((element,index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index+1 %>
+                                            </td>
+                                            <td>
+                                                <%= element.name %>
+                                            </td>
+                                            <td>
+                                                <%= element.email %>
+                                            </td>
+                                            <td>
+                                                <%= element.mobile %>
+                                            </td>
+
+                                            
+                                                <% if (element.blockuser===true) { %>
+                                                        <td id="active<%= index %>" style="display: none;" class="btn-outline-success">active</td>
+                                                        <td id="blocked<%= index %>" class="btn-outline-danger">blocked </td>
+                                                    <% } else { %>
+                                                        <td id="blocked<%= index %>" style="display: none;" class="btn-outline-danger">blocked </td>
+                                                        <td id="active<%= index %>" class="btn-outline-success">active</td>
+                                                        <% } %>
+                                           
+                                            <td>
+                                                <% if (element.blockuser==true) { %>
+                                                    <button id="unblock<%= index %>" class="btn btn-success"
+                                                        onclick=" Unblockuser('<%= element._id %>','<%= index %>')">Un
+                                                        Block</button>
+                                                    <button style="display: none;" id="block<%= index %>"
+                                                        class="btn btn-danger"
+                                                        onclick=" blockuser('<%= element._id %>','<%= index %>')">Block</button>
+
+                                                    <% } else { %>
+                                                        <button id="block<%= index %>" class="btn btn-danger"
+                                                            onclick=" blockuser('<%= element._id %>','<%= index %>')">Block</button>
+                                                        <button style="display: none;" id="unblock<%= index %>"
+                                                            class="btn btn-success"
+                                                            onclick=" Unblockuser('<%= element._id %>','<%= index %>')">Un
+                                                            Block</button>
+
+                                                        <% } %>
+                                            </td>
+                                        </tr>
+
+                                        <% }) %>
+                                            <script>
+                                                function blockuser(user, num) {
+                                                    swal({
+                                                        title: "Are you sure?",
+                                                        text: "Do you want to block user",
+                                                        type: "success",
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: "#DD6B55",
+                                                        confirmButtonText: "Yes",
+                                                        cancelButtonText: "No",
+                                                        closeOnConfirm: false,
+                                                        closeOnCancel: true
+                                                    },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                $.ajax({
+                                                                    url: "/admin/block",
+                                                                    method: 'POST',
+                                                                    data: { user: user },
+                                                                    encoded: true,
+                                                                    success: function (response) {
+                                                                        swal("completed", "user account has been blocked", "success");
+                                                                        document.getElementById(`block${num}`).style.display = 'none'
+                                                                        document.getElementById(`unblock${num}`).style.display = ''
+                                                                        document.getElementById(`active${num}`).style.display = 'none'
+                                                                        document.getElementById(`blocked${num}`).style.display = ''
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                swal("Cancelled", "You cancelled request", "error");
+                                                            }
+                                                        });
+                                                }
+                                                function Unblockuser(user, num) {
+                                                    swal({
+                                                        title: "Are you sure?",
+                                                        text: "Do you want to unblock user",
+                                                        type: "success",
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: "#DD6B55",
+                                                        confirmButtonText: "Yes",
+                                                        cancelButtonText: "No",
+                                                        closeOnConfirm: false,
+                                                        closeOnCancel: true
+                                                    },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                $.ajax({
+                                                                    url: "/admin/unblock",
+                                                                    method: 'POST',
+                                                                    data: { user: user },
+                                                                    encoded: true,
+                                                                    success: function (response) {
+                                                                        swal("completed", "user unblocked", "success");
+                                                                        document.getElementById(`block${num}`).style.display = ''
+                                                                        document.getElementById(`unblock${num}`).style.display = 'none'
+                                                                        document.getElementById(`active${num}`).style.display = ''
+                                                                        document.getElementById(`blocked${num}`).style.display = 'none'
+                                                                    }
+                                                                })
+                                                            } else {
+                                                                swal("Cancelled", "You cancelled request", "error");
+                                                            }
+                                                        });
+                                                }
+                                            </script>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../adminlayout/footer.ejs') %>

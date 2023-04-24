@@ -1,0 +1,61 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+        <h1>Add Coupon</h1>
+        <div class="container pt-4 px-4">
+            <div class="row g-4">
+                <form class="col-lg-6 col-8" action="/admin/addcoupon" method="post">
+                    <div class="mb-3">
+
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Code</label>
+                        <input type="text" class="form-control" id="code" maxlength="10" oninput="validateCode()"
+                            name="code" required>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label class="form-label">No. of days of validity</label>
+                        <input type="tel" class="form-control" oninput="validate('number')" id="number" name="date"
+                            required>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label class="form-label">No. of Users to Use</label>
+                        <input type="tel" class="form-control" oninput="validate('quantity')" id="quantity" name="quantity"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount in %</label>
+                        <input type="tel" class="form-control" oninput="validate('amount')" id="amount" name="amount"
+                            required>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Add Coupon">
+                </form>
+            </div>
+        </div>
+        <script>
+            function validateCode() {
+                let value = document.getElementById("code").value
+                document.getElementById("code").value = value.toUpperCase()
+            }
+            function validateDate() {
+                let value = parseInt(document.getElementById("number").value)
+                if (value > 0) {
+                    document.getElementById("number").value = value
+
+                } else {
+                    document.getElementById("number").value = ""
+                }
+            }
+            function validate(set) {
+                let num = parseFloat(document.getElementById(set).value)
+                if (num > 0) {
+                    document.getElementById(set).value = num
+                } else {
+                    document.getElementById(set).value = ""
+                }
+            }
+
+        </script>
+        <%- include('../adminlayout/footer.ejs') %>

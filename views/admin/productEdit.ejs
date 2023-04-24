@@ -1,0 +1,160 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+
+                <div class="row">
+                    <% product.image.forEach((element,index)=> { %>
+                        <div class="col-md-2 col-4" id="pic<%= index %>">
+                            <img src="/ProductImages/<%= element %>" style="object-fit:contain;"  class="col-12" height="300px"
+                                 alt="">
+                                 <button onclick="removePic('<%= element %>','<%= index %>','<%= product._id %>')"
+                                    class="btn btn-danger">Remove</button>
+                                </div>
+                        <% }) %>
+                </div>
+                <form action="/admin/addImage" method="post" enctype="multipart/form-data">
+                    <div class="mb-3 col col-md-5">
+                        <input type="text" name="id" value="<%= product._id %>" style="display: none;">
+
+                        <label for="formFile" class="form-label">Image</label>
+                        <input class="form-control" type="file" name="image" id="formFile" multiple>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Add Image">
+                </form>
+                <form action="" id="offerform">
+                    <% if (product.offer.status) { %>
+
+                        <div class="mb-3 col col-md-5">
+                            <label class="form-label">Offer In Percentage(optional)</label>
+                            <input type="text" class="form-control" name="offeramount"
+                                value="<%= product.offer.amount %>">
+                                <label for="" class="form-control"> offer Price : <%= product.price %></label><br>
+                            <input type="submit" class="btn btn-primary" value="Update">
+                            <a href="/admin/deleteofer/<%= product._id %>" class="btn btn-danger">Remove</a>
+                        </div>
+                        <% } else { %>
+                            <div class="mb-3 col col-md-5">
+                                <label class="form-label">Offer In Percentage(optional)</label>
+                                <input type="text" class="form-control" name="offeramount" value="">
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Add Offer">
+
+                            <% } %>
+                </form>
+                <form action="/admin/update-product" method="post">
+
+                    <div class="mb-3  col col-md-5">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" value="<%= product.name %>" required>
+                    </div>
+                    <div class="mb-3 col col-md-5">
+                        <label class="form-label">price</label>
+                        <% if (product.offer.status) { %>
+                            <input type="tel" class="form-control" id="priceamount" name="price" value="<%= product.offerprice %>" required>
+                        <script>
+                            document.getElementById("priceamount").readOnly = true;
+                        </script>
+                        <% } else { %>
+                            <input type="tel" class="form-control" name="price" value="<%= product.price %>" required>
+                         
+                        <% } %>
+                    </div>
+                    <div class="mb-3 col col-md-5">
+                        <label class="form-label">stock</label>
+                        <input type="text" class="form-control"  name="stock" value="<%= product.stock %>" required>
+                    </div>
+                    <div class="mb-3  col col-md-5">
+
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                            style="height: 150px;" name="description" required><%= product.description %></textarea>
+                    </div>
+
+
+                    <input type="text" style="display: none;" name="product" value="<%= product._id %>">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
+
+            </div>
+        </div>
+
+
+        <script>
+            function removePic(image, num, id) {
+                swal({
+                    title: "Are you sure?",
+                    text: "The Image Will be removed",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes,Are sure!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+
+                            $.ajax({
+                                url: "/admin/removeimage",
+                                method: 'POST',
+                                data: { id: id, image: image },
+                                encoded: true,
+                                success: function (response) {
+                                    if (response.status) {
+                                        swal("Deleted!", "Your image file has been deleted.", "success");
+                                        document.getElementById(`pic${num}`).style.display = 'none'
+                                    } else {
+                                        swal("Cancelled", "Minmum One image required", "success");
+                                    }
+
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Your product is not recovered :)", "error");
+                        }
+                    });
+            }
+            const offerform = document.getElementById("offerform")
+            offerform.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const offerpercentage = parseFloat(offerform.elements['offeramount'].value)
+                if (offerpercentage > 0) {
+                    let product = '<%= product._id %>'
+                    swal({
+                        title: "Are you sure?",
+                        text: "Do you want to update prduct offer",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, update it!",
+                        cancelButtonText: "No, cancel !",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: "/admin/offer",
+                                    method: 'POST',
+                                    data: { offerpercentage: offerpercentage, product: product },
+                                    encoded: true,
+                                    success: function (response) {
+                                        window.location.reload()
+                                    }
+                                });
+                            } else {
+                                swal("Cancelled", "Your product is not deleted", "error");
+                            }
+                        });
+
+                } else {
+                    alert("Enter offer percentage")
+                }
+            })
+        </script>
+
+        <%- include('../adminlayout/footer.ejs') %>

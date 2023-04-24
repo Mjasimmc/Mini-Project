@@ -1,0 +1,22 @@
+<%- include('../adminlayout/header.ejs') %>
+    <%- include('../adminlayout/navbar.ejs') %>
+
+
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <form action="/admin/salesReport" method="post" class="col-3" id="formone">
+                    <div class="mb-3">
+                        <label class="form-label">Starting Date</label>
+                        <input type="date" class="form-control" name="startingdate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ending Date</label>
+                        <input type="date" class="form-control" name="endingdate" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Select Categroy</button>
+                    </form>
+            </div>
+            
+        </div>
+        
+        <%- include('../adminlayout/footer.ejs') %>
