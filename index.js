@@ -38,6 +38,8 @@ app.use((err, req, res, next) => {
     }
     res.render('error-404',{error})
 });
+
+
 app.use('/*', errorRoute)
 
 app.listen(process.env.PORT, () => console.log("server is running"))
