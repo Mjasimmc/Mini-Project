@@ -507,6 +507,7 @@
             };
             var rzp1 = new Razorpay(options);
             rzp1.on('payment.failed', function (response) {
+                alert("error")
                 location.href = `/payment-failed/${order}`
             });
             rzp1.open();

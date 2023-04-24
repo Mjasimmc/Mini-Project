@@ -8,7 +8,6 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 require('dotenv').config({ path: __dirname + '../config/.env' })
 const Razorpay = require('razorpay');
-
 const product = require('../models/product')
 const moment = require('moment');
 const razorpay = new Razorpay({

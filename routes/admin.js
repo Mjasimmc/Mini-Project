@@ -85,10 +85,4 @@ router.post('/pdf-convert',sessionCheck.logged,)
 router.get('/export-pdf/:content',sessionCheck.logged,adminController.downloadpdf)
 router.get("/pdfcontent/:name",adminController.pdfPage)
 
-router.get('/salesReport',sessionCheck.logged,adminController.loadSalesReport)
-// router.post('/salesReport/category',sessionCheck.logged,adminController.salesReportDate)
-router.post('/salesReport',sessionCheck.logged,adminController.salesReportDate)
-
-
-
 module.exports = router;

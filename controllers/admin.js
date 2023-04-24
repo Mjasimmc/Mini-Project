@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('path');
 const { page } = require('pdfkit');
+let downloadingContent
 require('dotenv').config({ path: __dirname + '../config/.env' })
 const post_login = async (req, res, next) => {
     try {
@@ -272,6 +273,7 @@ const load_order_list = async (req, res, next) => {
     try {
         const page = parseInt(req.params.page)
         const orders = await orderModel.find({}).skip(10 * (page - 1)).limit(10).sort({ orderdate: -1 }).populate("user")
+        downloadingContent = orders
         res.render('orderlist', { orders, page })
     } catch (error) {
         console.log(error.message)
@@ -620,30 +622,7 @@ const pdfPage = async (req, res, next) => {
         next(error)
     }
 }
-const loadSalesReport = async (req,res,next)=>{
-    try {
-        const category = await categorydata.find()
-        res.render("salesReportLoad",{category})
-    } catch (error) {
-        console.log(error.message)
-        next(error)
-    }
-}
-const salesReportDate = async (req,res,next)=>{
-    try {
-        const start = req.body.startingdate
-        const end = req.body.endingdate
-        console.log(start,end);
-        const orders = await orderModel.find({})
-        res.render('salesReport', { orders })
-    } catch (error) {
-        console.log(error.message)
-        next(error)
-    }
-}
 module.exports = {
-    salesReportDate,
-    loadSalesReport,
     pdfPage,
     downloadpdf,
 
