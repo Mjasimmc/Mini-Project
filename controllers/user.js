@@ -685,13 +685,13 @@ const verifPayment = async (req, res, next) => {
             .update(message)
             .digest('hex');
 
-        if (generated_signature === razorpay_signature) {
-            const orderid = req.session.orderplaced._id
-            await orderPlace.findOneAndUpdate({ _id: orderid }, {
+            await orderPlace.findOneAndUpdate({ _id: req.session.orderplaced._id }, {
                 $set: {
                     paymentstatus: "Completed"
                 }
             })
+        if (generated_signature === razorpay_signature) {
+            const orderid = req.session.orderplaced._id
             res.json({
                 payment: true,
                 orderid: req.session.orderid

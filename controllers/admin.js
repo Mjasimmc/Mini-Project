@@ -4,7 +4,7 @@ const adminDB = require('../models/admin')
 const categorydata = require('../models/catogory')
 const orderModel = require('../models/orders')
 const couponModel = require('../models/coupon')
-
+const moment = require("moment")
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const fs = require('fs');
 
@@ -633,8 +633,13 @@ const salesReportDate = async (req,res,next)=>{
     try {
         const start = req.body.startingdate
         const end = req.body.endingdate
-        console.log(start,end);
-        const orders = await orderModel.find({})
+        let startingdate = moment(start,'MMMM Do YYYY')
+        let endingdate = moment(end,'MMMM Do YYYY')
+        startingdate = startingdate.format('MMMM Do YYYY, h:mm:ss a')
+        endingdate = endingdate.format('MMMM Do YYYY, h:mm:ss a')
+        console.log(endingdate);
+        const orders = await orderModel.find({paymentstatus:"Completed"})
+        console.log();
         res.render('salesReport', { orders })
     } catch (error) {
         console.log(error.message)
