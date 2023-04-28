@@ -622,26 +622,30 @@ const pdfPage = async (req, res, next) => {
         next(error)
     }
 }
-const loadSalesReport = async (req,res,next)=>{
+const loadSalesReport = async (req, res, next) => {
     try {
         const category = await categoryData.find()
-        res.render("salesReportLoad",{category})
+        res.render("salesReportLoad", { category })
     } catch (error) {
         console.log(error.message)
         next(error)
     }
 }
-const salesReportDate = async (req,res,next)=>{
+const salesReportDate = async (req, res, next) => {
     try {
         const start = req.body.startingdate
         const end = req.body.endingdate
-        let startingdate = moment(start,'MMMM Do YYYY')
-        let endingdate = moment(end,'MMMM Do YYYY')
-        startingdate = startingdate.format('MMMM Do YYYY, h:mm:ss a')
-        endingdate = endingdate.format('MMMM Do YYYY, h:mm:ss a')
-        console.log(endingdate);
-        const orders = await orderModel.find({paymentstatus:"Completed"})
-        console.log();
+        const fromorders = await orderModel.find({ paymentstatus: "Completed" })
+        let orders = []
+
+        for(let i=0;i<fromorders.length;i++){
+            let date = moment(fromorders[i].orderdate, "MMMM Do YYYY, h:mm:ss a");
+            const formattedDate = date.format("YYYY-MM-DD");
+            if(formattedDate >= start && formattedDate <=end){
+                orders[orders.length] = fromorders[i]
+            }
+        }
+
         res.render('salesReport', { orders })
     } catch (error) {
         console.log(error.message)
