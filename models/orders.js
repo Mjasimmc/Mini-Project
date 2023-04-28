@@ -18,10 +18,13 @@ const order = mongoose.Schema({
         },
         productreturn: [
             {
-                type: String,
+                type: Boolean,
                 default: false
             }
-        ]
+        ],
+        category:{
+            type:String
+        }
     }],
     orderdate: {
         type: String

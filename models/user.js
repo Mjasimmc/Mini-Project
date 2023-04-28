@@ -52,6 +52,9 @@ const userSchema = mongoose.Schema({
                 price: {
                     type: Number
                 }
+            },
+            category:{
+                type:String
             }
         }
     ],

@@ -1,7 +1,7 @@
 const UserModify = require('../models/user');
 const productModidy = require('../models/product')
 const adminDB = require('../models/admin')
-const categorydata = require('../models/catogory')
+const categoryData = require('../models/catogory')
 const orderModel = require('../models/orders')
 const couponModel = require('../models/coupon')
 const moment = require("moment")
@@ -97,7 +97,7 @@ const un_block = async (req, res, next) => {
 }
 const load_insert_product = async (req, res, next) => {
     try {
-        const category = await categorydata.find({ delete: 0 })
+        const category = await categoryData.find({ delete: 0 })
         req.session.category = category._id;
         res.render('addproduct', { category })
     } catch (error) {
@@ -124,7 +124,7 @@ const insert_product = async (req, res, next) => {
             stock: req.body.stock
         })
         const categoryid = req.body.fruits;
-        await categorydata.findOneAndUpdate({ _id: categoryid }, { $inc: { products: 1 } })
+        await categoryData.findOneAndUpdate({ _id: categoryid }, { $inc: { products: 1 } })
         await product.save()
         res.redirect('/admin/productlist')
     } catch (error) {
@@ -136,10 +136,10 @@ const insert_category = async (req, res, next) => {
     try {
         let category = req.body.name;
         category = category.toLowerCase();
-        const product = new categorydata({
+        const product = new categoryData({
             category: category
         })
-        const existdata = await categorydata.findOne({ category: category })
+        const existdata = await categoryData.findOne({ category: category })
         if (existdata != null) {
             req.session.categorymessage = "Your category is already exist"
         } else {
@@ -221,7 +221,7 @@ const category_list = async (req, res, next) => {
     try {
         alertMessage = req.session.categorymessage
         req.session.categorymessage = ""
-        const category = await categorydata.find({})
+        const category = await categoryData.find({})
         res.render('categorylist', { category })
     } catch (error) {
         console.log(error.message)
@@ -232,7 +232,7 @@ const load_edit_product = async (req, res, next) => {
     try {
         const productId = req.params.id
         const product = await productModidy.findOne({ _id: productId })
-        const category = await categorydata.find({})
+        const category = await categoryData.find({})
         res.render('productEdit', { product, category })
     } catch (error) {
         console.log(error.messaage)
@@ -282,6 +282,8 @@ const view_order = async (req, res, next) => {
     try {
         const OrderId = req.params.id
         const order = await orderModel.findOne({ _id: OrderId }).populate("products.product")
+        const category = await categoryData.find()
+        console.log(order);
         res.render("order-details", { order })
 
     } catch (error) {
@@ -377,7 +379,7 @@ const add_image = async (req, res, next) => {
 const load_category_edit = async (req, res, next) => {
     try {
         const id = req.params.id
-        const categorydetails = await categorydata.findOne({ _id: id });
+        const categorydetails = await categoryData.findOne({ _id: id });
         res.render("edit-category", { categorydetails })
     } catch (error) {
         console.log(error.message)
@@ -388,7 +390,7 @@ const update_category = async (req, res, next) => {
     try {
         const category = req.body.id
         const name = req.body.name
-        const detiails = await categorydata.findOneAndUpdate({ _id: category }, {
+        const detiails = await categoryData.findOneAndUpdate({ _id: category }, {
             $set: {
                 category: name
             }
@@ -403,7 +405,7 @@ const update_category = async (req, res, next) => {
 const delete_category = async (req, res, next) => {
     try {
         const category = req.body.name
-        const detiails = await categorydata.findOneAndUpdate({ category: category }, {
+        const detiails = await categoryData.findOneAndUpdate({ category: category }, {
             $set: {
                 delete: 1
             }
@@ -419,7 +421,7 @@ const delete_category = async (req, res, next) => {
 const undo_category = async (req, res, next) => {
     try {
         const category = req.body.name
-        const detiails = await categorydata.findOneAndUpdate({ category: category }, {
+        const detiails = await categoryData.findOneAndUpdate({ category: category }, {
             $set: {
                 delete: 0
             }
@@ -622,7 +624,7 @@ const pdfPage = async (req, res, next) => {
 }
 const loadSalesReport = async (req,res,next)=>{
     try {
-        const category = await categorydata.find()
+        const category = await categoryData.find()
         res.render("salesReportLoad",{category})
     } catch (error) {
         console.log(error.message)

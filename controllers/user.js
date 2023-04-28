@@ -435,7 +435,7 @@ const addToCart = async (req, res, next) => {
     try {
         const { pdt_id } = req.body
         const id = req.session.login._id
-        const productDetails = await productView.findOne({ _id: pdt_id })
+        const productDetails = await productView.findOne({ _id: pdt_id }).populate("category")
         const check = await userModify.findOne({ _id: id, "cart.product": pdt_id })
         if (check == [] || check == null || check == 'undefined') {
             const quantity = 1
@@ -447,7 +447,8 @@ const addToCart = async (req, res, next) => {
                         offer: {
                             status: productDetails.offer.status,
                             price: productDetails.price
-                        }
+                        },
+                        category:productDetails.category.category
                     }
                 }
             }, { upsert: true })
@@ -959,10 +960,12 @@ module.exports = {
     loadCheckout,
     viewShopAfter,
     viewShopBefore,
+
     viewCart,
     addToCart,
     removeCart,
     deleteProductCart,
+
     loadLanding,
     loadSignIn,
     loadProfile,
